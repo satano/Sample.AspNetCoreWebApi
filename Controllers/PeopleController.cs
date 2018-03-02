@@ -17,5 +17,25 @@ namespace Sample.AspNetCoreWebApi.Controllers
 
         [HttpGet()]
         public IEnumerable<Person> GetAll() => _peopleRepository.GetPeople();
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var person = _peopleRepository.GetPerson(id);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(person);
+        }
+
+        public IActionResult Create([FromBody] Person person)
+        {
+            _peopleRepository.AddPerson(person);
+
+            return Ok();
+        }
     }
 }
