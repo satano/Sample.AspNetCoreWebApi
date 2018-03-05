@@ -16,14 +16,14 @@ namespace Sample.AspNetCoreWebApi.Services
         /// Register KORM to IoC container.
         /// </summary>
         /// <param name="services">IoC container.</param>
-        public static void AddKorm(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddKorm(this IServiceCollection services, IConfiguration configuration)
         {
             Check.NotNull(services, nameof(services));
             Check.NotNull(configuration, nameof(configuration));
 
             var connectionString = configuration.GetSection(ConnectionStringSectionName).Get<ConnectionStringSettings>();
 
-            services.AddScoped<IDatabase>((serviceProvider) =>
+            return services.AddScoped<IDatabase>((serviceProvider) =>
             {
                 return new Database(connectionString);
             });
@@ -33,11 +33,11 @@ namespace Sample.AspNetCoreWebApi.Services
         /// Register KORM to IoC container.
         /// </summary>
         /// <param name="services">IoC container.</param>
-        public static void AddRepositories(this IServiceCollection services)
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             Check.NotNull(services, nameof(services));
 
-            services.AddTransient<IPeopleRepository, PeopleRepository>();
+            return services.AddTransient<IPeopleRepository, PeopleRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -63,7 +63,6 @@ namespace Sample.AspNetCoreWebApi.Services
             //                 ValidAudience = configuration["Authentication:Audience"],
             //                 IssuerSigningKey = JwtToken.GetSecret(configuration["Authentication:Key"])
             //             };
-
 
             //         });
 

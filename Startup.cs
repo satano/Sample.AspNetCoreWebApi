@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Sample.AspNetCoreWebApi.Middlewares;
 using Sample.AspNetCoreWebApi.Services;
 
 namespace Sample.AspNetCoreWebApi
@@ -24,8 +25,9 @@ namespace Sample.AspNetCoreWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddKorm(Configuration);
-            services.AddRepositories();
+
+            services.AddKorm(Configuration)
+                .AddRepositories();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -35,7 +37,8 @@ namespace Sample.AspNetCoreWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseLogging()
+                .UseMvc();
         }
     }
 }
