@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using Kros.Utils;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Sample.AspNetCoreWebApi.Filters;
 using Sample.AspNetCoreWebApi.Models;
+using Sample.AspNetCoreWebApi.ViewModels;
 
 namespace Sample.AspNetCoreWebApi.Controllers
 {
@@ -16,12 +19,12 @@ namespace Sample.AspNetCoreWebApi.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<Person> GetAll() => _peopleRepository.GetPeople();
+        public IEnumerable<Person> GetAll() => _peopleRepository.GetAll();
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var person = _peopleRepository.GetPerson(id);
+            var person = _peopleRepository.Get(id);
 
             if (person == null)
             {
@@ -31,9 +34,42 @@ namespace Sample.AspNetCoreWebApi.Controllers
             return Ok(person);
         }
 
-        public IActionResult Create([FromBody] Person person)
+        [HttpPost]
+        [ModelStateValidationFilter]
+        public IActionResult Create([FromBody] PersonViewModel person)
         {
-            _peopleRepository.AddPerson(person);
+            var model = person.Adapt<Person>();
+            _peopleRepository.Add(model);
+
+            return Created(nameof(GetById), new { id = model.Id });
+        }
+
+        [HttpPut("{id}")]
+        [ModelStateValidationFilter]
+        public IActionResult Update(int id, [FromBody] PersonViewModel person)
+        {
+            var model = _peopleRepository.Get(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            person.Adapt(model);
+            _peopleRepository.Edit(model);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (!_peopleRepository.Exist(id))
+            {
+                return NotFound();
+            }
+
+            _peopleRepository.Delete(id);
 
             return Ok();
         }

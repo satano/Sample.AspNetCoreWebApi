@@ -4,12 +4,16 @@ namespace Sample.AspNetCoreWebApi.Models
 {
     public interface IPeopleRepository
     {
-        IEnumerable<Person> GetPeople();
+        IEnumerable<Person> GetAll();
 
-        Person GetPerson(int id);
+        Person Get(int id);
 
-        void AddPerson(Person person);
+        void Add(Person person);
 
-        void EditPerson(Person person);
+        void Edit(Person person);
+
+        void Delete(int id);
+
+        bool Exist(int id);
     }
 }

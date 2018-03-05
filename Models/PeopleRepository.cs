@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Kros.KORM;
 using System.Linq;
+using Kros.KORM;
 using Kros.Utils;
 
 namespace Sample.AspNetCoreWebApi.Models
@@ -14,7 +14,7 @@ namespace Sample.AspNetCoreWebApi.Models
             _database = Check.NotNull(database, nameof(database));
         }
 
-        public void AddPerson(Person person)
+        public void Add(Person person)
         {
             var people = _database.Query<Person>().AsDbSet();
 
@@ -22,7 +22,7 @@ namespace Sample.AspNetCoreWebApi.Models
             people.CommitChanges();
         }
 
-        public void EditPerson(Person person)
+        public void Edit(Person person)
         {
             var people = _database.Query<Person>().AsDbSet();
 
@@ -30,11 +30,21 @@ namespace Sample.AspNetCoreWebApi.Models
             people.CommitChanges();
         }
 
-        public IEnumerable<Person> GetPeople() =>
+        public IEnumerable<Person> GetAll() =>
             _database.Query<Person>();
 
-        public Person GetPerson(int id) =>
+        public Person Get(int id) =>
             _database.Query<Person>().FirstOrDefault(p => p.Id == id);
 
+        public void Delete(int id)
+        {
+            var people = _database.Query<Person>().AsDbSet();
+
+            people.Delete(new Person() { Id = id });
+            people.CommitChanges();
+        }
+
+        public bool Exist(int id) =>
+            _database.Query<Person>().Any(p => p.Id == id);
     }
 }
