@@ -1,8 +1,11 @@
 using System.Configuration;
 using Kros.KORM;
 using Kros.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Sample.AspNetCoreWebApi.Authorization;
 using Sample.AspNetCoreWebApi.Models;
 
 namespace Sample.AspNetCoreWebApi.Services
@@ -37,43 +40,46 @@ namespace Sample.AspNetCoreWebApi.Services
         {
             Check.NotNull(services, nameof(services));
 
-            return services.AddTransient<IPeopleRepository, PeopleRepository>();
+            return services.AddTransient<IPeopleRepository, PeopleRepository>()
+                .AddTransient<IUserRepository, UserRepository>();
         }
 
-        public static void AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
             Check.NotNull(services, nameof(services));
 
+            return services;
         }
 
-        public static void AddJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
         {
-            // services.Configure<AuthenticationOption>(configuration.GetSection("Authentication"));
+            services.Configure<AuthenticationOption>(configuration.GetSection("Authentication"));
 
-            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //         .AddJwtBearer(options => {
-            //             options.TokenValidationParameters = new TokenValidationParameters
-            //             {
-            //                 ValidateIssuer = true,
-            //                 ValidateAudience = true,
-            //                 ValidateLifetime = true,
-            //                 ValidateIssuerSigningKey = true,
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = false,
+                    ValidIssuer = configuration["Authentication:Issuer"],
+                    ValidAudience = configuration["Authentication:Audience"],
+                    IssuerSigningKey = JwtToken.GetSecret(configuration["Authentication:Key"])
+                    };
 
-            //                 ValidIssuer = configuration["Authentication:Issuer"],
-            //                 ValidAudience = configuration["Authentication:Audience"],
-            //                 IssuerSigningKey = JwtToken.GetSecret(configuration["Authentication:Key"])
-            //             };
+                });
 
-            //         });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(JwtToken.ADMIN_NAME,
+                    policy => policy.RequireClaim(configuration["Authentication:AdminClaimName"]));
+                options.AddPolicy(JwtToken.USER_NAME,
+                    policy => policy.RequireClaim(configuration["Authentication:UserClaimName"]));
+            });
 
-            // services.AddAuthorization(options =>
-            // {
-            //     options.AddPolicy(JwtToken.ADMIN_NAME,
-            //         policy => policy.RequireClaim(configuration["Authentication:AdminClaimName"]));
-            //     options.AddPolicy(JwtToken.USER_NAME,
-            //         policy => policy.RequireClaim(configuration["Authentication:UserClaimName"]));
-            // });
-
+            return services;
         }
 
     }

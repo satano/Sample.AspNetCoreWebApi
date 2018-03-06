@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Kros.Utils;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sample.AspNetCoreWebApi.Filters;
 using Sample.AspNetCoreWebApi.Models;
@@ -9,7 +10,7 @@ using Sample.AspNetCoreWebApi.ViewModels;
 namespace Sample.AspNetCoreWebApi.Controllers
 {
 
-    public class PeopleController : BaseController
+    public class PeopleController : ControllerBase
     {
         private readonly IPeopleRepository _peopleRepository;
 
@@ -62,6 +63,7 @@ namespace Sample.AspNetCoreWebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy="Admin")]
         public IActionResult Delete(int id)
         {
             if (!_peopleRepository.Exist(id))

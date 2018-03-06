@@ -18,6 +18,7 @@ namespace Sample.AspNetCoreWebApi.Models
         {
             var people = _database.Query<Person>().AsDbSet();
 
+
             people.Add(person);
             people.CommitChanges();
         }

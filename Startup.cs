@@ -27,7 +27,8 @@ namespace Sample.AspNetCoreWebApi
             services.AddMvc();
 
             services.AddKorm(Configuration)
-                .AddRepositories();
+                .AddRepositories()
+                .AddJwtAuthorization(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -37,7 +38,8 @@ namespace Sample.AspNetCoreWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseLogging()
+            app.UseAuthentication()
+                .UseLogging()
                 .UseMvc();
         }
     }
