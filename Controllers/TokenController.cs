@@ -7,7 +7,7 @@ using Sample.AspNetCoreWebApi.Filters;
 using Sample.AspNetCoreWebApi.Models;
 using Sample.AspNetCoreWebApi.ViewModels;
 
-namespace Kros.OnlineMaterials.Server.Controllers
+namespace Sample.AspNetCoreWebApi.Controllers
 {
     [Route("token")]
     [AllowAnonymous]
@@ -34,9 +34,9 @@ namespace Kros.OnlineMaterials.Server.Controllers
                 return Unauthorized();
             }
 
-            var passord = new PasswordHasher(_params.Salt).EncryptPassword(user.Password);
+            var password = new PasswordHasher(_params.Salt).EncryptPassword(user.Password);
 
-            if (model.PasswordHash != passord)
+            if (model.PasswordHash != password)
             {
                 return Unauthorized();
             }
