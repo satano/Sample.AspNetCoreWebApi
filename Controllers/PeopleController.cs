@@ -89,6 +89,7 @@ namespace Sample.AspNetCoreWebApi.Controllers
         /// </summary>
         /// <param name="id">User id.</param>
         /// <response code="404">If the person is not found.</response>
+        /// <response code="401">If actual user is not admin.</response>
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin")]
         public IActionResult Delete(int id)
