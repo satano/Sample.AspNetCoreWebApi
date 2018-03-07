@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Sample.AspNetCoreWebApi.ViewModels
 {
+    /// <summary>
+    /// View model representing person.
+    /// </summary>
     public class PersonViewModel
     {
 

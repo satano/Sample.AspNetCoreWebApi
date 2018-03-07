@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sample.AspNetCoreWebApi.Middlewares;
 using Sample.AspNetCoreWebApi.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Sample.AspNetCoreWebApi
 {
@@ -32,7 +33,8 @@ namespace Sample.AspNetCoreWebApi
                 .AddRepositories()
                 .AddJwtAuthorization(Configuration)
                 .AddDirectoryBrowser()
-                .AddResponseCompression();
+                .AddResponseCompression()
+                .AddSwaggerDocumentation();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -43,6 +45,7 @@ namespace Sample.AspNetCoreWebApi
             }
 
             app.UseResponseCompression()
+                .UseStaticFiles()
                 .UseFileServer(new FileServerOptions
                 {
                     FileProvider = new PhysicalFileProvider(
@@ -50,6 +53,7 @@ namespace Sample.AspNetCoreWebApi
                         RequestPath = "/StaticFiles",
                         EnableDirectoryBrowsing = true
                 })
+                .UseSwaggerDocumentation()
                 .UseAuthentication()
                 .UseLogging()
                 .UseMvc();

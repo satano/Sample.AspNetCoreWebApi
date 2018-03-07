@@ -23,6 +23,11 @@ namespace Sample.AspNetCoreWebApi.Controllers
             _params = optionsAccessor.Value;
         }
 
+        /// <summary>
+        /// Creating authorization token.
+        /// </summary>
+        /// <param name="user">User for authentification.</param>
+        /// <response code="401">When name or password are incorrect..</response>
         [HttpPost]
         [ModelStateValidationFilter]
         public IActionResult Create([FromBody] UserViewModel user)

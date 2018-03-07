@@ -90,7 +90,6 @@ namespace Sample.AspNetCoreWebApi.Authorization
         /// <summary>
         /// Builds new instance of JwtToken.
         /// </summary>
-        /// <param name="expiryInMinutes">New expire time in minutes.</param>
         /// <returns>This instance.</returns>
         internal JwtToken Build()
         {

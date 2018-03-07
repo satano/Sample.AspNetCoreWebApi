@@ -19,6 +19,7 @@ namespace Sample.AspNetCoreWebApi.Services
         /// Register KORM to IoC container.
         /// </summary>
         /// <param name="services">IoC container.</param>
+        /// <param name="configuration">Configuration.</param>
         public static IServiceCollection AddKorm(this IServiceCollection services, IConfiguration configuration)
         {
             Check.NotNull(services, nameof(services));
