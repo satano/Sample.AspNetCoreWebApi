@@ -1,0 +1,193 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: People API
+  description: A simple example ASP.NET Core Web API
+  contact:
+    name: Miňo Martiniak
+    url: 'https://twitter.com/MinoMartiniak'
+paths:
+  /api/People:
+    get:
+      tags:
+        - People
+      summary: Get all people for authorized user.
+      operationId: ApiPeopleGet
+      consumes: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Person'
+    post:
+      tags:
+        - People
+      summary: Create new person on server.
+      operationId: ApiPeoplePost
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+      produces: []
+      parameters:
+        - name: person
+          in: body
+          description: New person.
+          required: false
+          schema:
+            $ref: '#/definitions/PersonViewModel'
+      responses:
+        '201':
+          description: Returns the newly-created item.
+  '/api/People/{id}':
+    get:
+      tags:
+        - People
+      summary: Get person by id.
+      operationId: ApiPeopleByIdGet
+      consumes: []
+      produces: []
+      parameters:
+        - name: id
+          in: path
+          description: Person id.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: If user try access to data another user.
+        '404':
+          description: If the person is not found.
+    put:
+      tags:
+        - People
+      summary: Update person.
+      operationId: ApiPeopleByIdPut
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+      produces: []
+      parameters:
+        - name: id
+          in: path
+          description: Person id.
+          required: true
+          type: integer
+          format: int32
+        - name: person
+          in: body
+          description: Person data for update.
+          required: false
+          schema:
+            $ref: '#/definitions/PersonViewModel'
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: If user try access to data another user.
+        '404':
+          description: If the person is not found.
+    delete:
+      tags:
+        - People
+      summary: Delete user by id.
+      operationId: ApiPeopleByIdDelete
+      consumes: []
+      produces: []
+      parameters:
+        - name: id
+          in: path
+          description: User id.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: If actual user is not admin.
+        '404':
+          description: If the person is not found.
+  /token:
+    post:
+      tags:
+        - Token
+      summary: Creating authorization token.
+      operationId: TokenPost
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+      produces: []
+      parameters:
+        - name: user
+          in: body
+          description: User for authentification.
+          required: false
+          schema:
+            $ref: '#/definitions/UserViewModel'
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: When name or password are incorrect..
+definitions:
+  Person:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      ownerId:
+        format: int32
+        type: integer
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+  PersonViewModel:
+    description: View model representing person.
+    required:
+      - firstName
+    type: object
+    properties:
+      firstName:
+        maxLength: 50
+        type: string
+      lastName:
+        maxLength: 50
+        type: string
+      email:
+        maxLength: 255
+        type: string
+  UserViewModel:
+    required:
+      - email
+      - password
+    type: object
+    properties:
+      email:
+        maxLength: 255
+        type: string
+      password:
+        maxLength: 255
+        type: string
+securityDefinitions:
+  Bearer:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: >-
+      JWT Authorization header using the Bearer scheme. Example: "Authorization:
+      Bearer {token}"
+security: []
