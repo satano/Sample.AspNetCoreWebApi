@@ -1,2 +1,6 @@
 # Sample.AspNetCoreWebApi
-Sample project for demonstration Asp.Net Core web api
+
+- info o tom čo obsahuje tento repositár
+- [API dokumentácia](https://sampleaspnetcorewebapi.docs.apiary.io)
+-
+- swager
