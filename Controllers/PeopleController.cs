@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sample.AspNetCoreWebApi.Filters;
 using Sample.AspNetCoreWebApi.Models;
+using Sample.AspNetCoreWebApi.Services;
 using Sample.AspNetCoreWebApi.ViewModels;
 
 namespace Sample.AspNetCoreWebApi.Controllers
@@ -12,10 +13,12 @@ namespace Sample.AspNetCoreWebApi.Controllers
     public class PeopleController : ControllerBase
     {
         private readonly IPeopleRepository _peopleRepository;
+        private readonly IActiveUser _activeUser;
 
-        public PeopleController(IPeopleRepository peopleRepository)
+        public PeopleController(IPeopleRepository peopleRepository, IActiveUser activeUser)
         {
             _peopleRepository = Check.NotNull(peopleRepository, nameof(peopleRepository));
+            _activeUser = Check.NotNull(activeUser, nameof(activeUser));
         }
 
         /// <summary>
@@ -23,13 +26,14 @@ namespace Sample.AspNetCoreWebApi.Controllers
         /// </summary>
         /// <returns>All user people.</returns>
         [HttpGet()]
-        public IEnumerable<Person> GetAll() => _peopleRepository.GetAll();
+        public IEnumerable<Person> GetAll() => _peopleRepository.GetAll(_activeUser.GetUserId());
 
         /// <summary>
         /// Get person by id.
         /// </summary>
         /// <param name="id">Person id.</param>
         /// <returns>Person if exist.</returns>
+        /// <response code="403">If user try access to data another user.</response>
         /// <response code="404">If the person is not found.</response>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -39,6 +43,10 @@ namespace Sample.AspNetCoreWebApi.Controllers
             if (person == null)
             {
                 return NotFound();
+            }
+            else if (person.OwnerId != _activeUser.GetUserId())
+            {
+                return Forbid();
             }
 
             return Ok(person);
@@ -56,6 +64,8 @@ namespace Sample.AspNetCoreWebApi.Controllers
         public IActionResult Create([FromBody] PersonViewModel person)
         {
             var model = person.Adapt<Person>();
+            model.OwnerId = _activeUser.GetUserId();
+
             _peopleRepository.Add(model);
 
             return Created(nameof(GetById), new { id = model.Id });
@@ -67,6 +77,7 @@ namespace Sample.AspNetCoreWebApi.Controllers
         /// <param name="id">Person id.</param>
         /// <param name="person">Person data for update.</param>
         /// <response code="404">If the person is not found.</response>
+        /// <response code="403">If user try access to data another user.</response>
         [HttpPut("{id}")]
         [ModelStateValidationFilter]
         public IActionResult Update(int id, [FromBody] PersonViewModel person)
@@ -76,6 +87,10 @@ namespace Sample.AspNetCoreWebApi.Controllers
             if (model == null)
             {
                 return NotFound();
+            }
+            else if (model.OwnerId != _activeUser.GetUserId())
+            {
+                return Forbid();
             }
 
             person.Adapt(model);

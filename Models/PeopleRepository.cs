@@ -31,8 +31,8 @@ namespace Sample.AspNetCoreWebApi.Models
             people.CommitChanges();
         }
 
-        public IEnumerable<Person> GetAll() =>
-            _database.Query<Person>();
+        public IEnumerable<Person> GetAll(int ownerId) =>
+            _database.Query<Person>().Where(p=> p.OwnerId == ownerId);
 
         public Person Get(int id) =>
             _database.Query<Person>().FirstOrDefault(p => p.Id == id);

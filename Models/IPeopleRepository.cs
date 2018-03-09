@@ -4,7 +4,7 @@ namespace Sample.AspNetCoreWebApi.Models
 {
     public interface IPeopleRepository
     {
-        IEnumerable<Person> GetAll();
+        IEnumerable<Person> GetAll(int ownerId);
 
         Person Get(int id);
 

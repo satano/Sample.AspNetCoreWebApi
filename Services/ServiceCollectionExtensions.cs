@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Security.Claims;
 using Kros.KORM;
 using Kros.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -49,7 +50,8 @@ namespace Sample.AspNetCoreWebApi.Services
         {
             Check.NotNull(services, nameof(services));
 
-            return services;
+            return services
+                .AddTransient<IActiveUser, HttpContextUser>();
         }
 
         public static IServiceCollection AddJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
@@ -77,7 +79,7 @@ namespace Sample.AspNetCoreWebApi.Services
                 options.AddPolicy(JwtToken.ADMIN_NAME,
                     policy => policy.RequireClaim(configuration["Authentication:AdminClaimName"]));
                 options.AddPolicy(JwtToken.USER_NAME,
-                    policy => policy.RequireClaim(configuration["Authentication:UserClaimName"]));
+                    policy => policy.RequireClaim(ClaimTypes.Sid));
             });
 
             return services;

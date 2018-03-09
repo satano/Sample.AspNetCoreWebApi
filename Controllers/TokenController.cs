@@ -1,4 +1,5 @@
-﻿using Kros.Utils;
+﻿using System.Security.Claims;
+using Kros.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -51,7 +52,7 @@ namespace Sample.AspNetCoreWebApi.Controllers
                 .AddSubject(_params.Subject)
                 .AddIssuer(_params.Issuer)
                 .AddAudience(_params.Audience)
-                .AddClaim(_params.UserClaimName, model.Id.ToString())
+                .AddClaim(ClaimTypes.Sid, model.Id.ToString())
                 .AddExpiry(_params.ExpirationTime);
 
             if (model.IsAdmin)

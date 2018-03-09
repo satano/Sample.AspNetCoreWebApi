@@ -27,11 +27,6 @@ namespace Sample.AspNetCoreWebApi.Authorization
         public string Audience {get;set;}
 
         /// <summary>
-        /// Represent name of user claim.
-        /// </summary>
-        public string UserClaimName {get;set;}
-
-        /// <summary>
         /// Represent name of admininistrator claim.
         /// </summary>
         public string AdminClaimName {get;set;}
