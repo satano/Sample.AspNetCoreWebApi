@@ -7,13 +7,9 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Sample.AspNetCoreWebApi.csproj"
+                "${workspaceFolder}/Sample.AspNetCoreWebApi.csproj"
             ],
-            "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
+            "problemMatcher": "$msCompile"
         }
     ]
 }
