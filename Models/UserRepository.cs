@@ -46,6 +46,7 @@ namespace Sample.AspNetCoreWebApi.Models
             };
         }
 
+        /// <inheritdoc/>
         public User GetByEmail(string email) => _users[email];
     }
 }

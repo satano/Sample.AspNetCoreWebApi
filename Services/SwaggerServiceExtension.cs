@@ -6,8 +6,15 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace Sample.AspNetCoreWebApi.Services
 {
+    /// <summary>
+    /// Extensions for adding swagger documentation to IoC and middleware.
+    /// </summary>
     public static class SwaggerServiceExtensions
     {
+        /// <summary>
+        /// Add swagger to IoC container.
+        /// </summary>
+        /// <param name="services">IoC container.</param>
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services) =>
             services.AddSwaggerGen(c =>
             {
@@ -35,6 +42,11 @@ namespace Sample.AspNetCoreWebApi.Services
                 });
             });
 
+        /// <summary>
+        /// Add swagger to middlewares.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
         public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app) =>
             app.UseSwagger()
             .UseSwaggerUI(c =>

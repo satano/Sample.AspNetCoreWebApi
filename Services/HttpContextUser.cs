@@ -12,6 +12,10 @@ namespace Sample.AspNetCoreWebApi.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="httpContextAccessor">Http context accessor.</param>
         public HttpContextUser(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor));

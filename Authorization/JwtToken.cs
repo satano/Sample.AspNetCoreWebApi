@@ -24,8 +24,6 @@ namespace Sample.AspNetCoreWebApi.Authorization
             _token = token;
         }
 
-        //public DateTime ValidTo => _token.ValidTo;
-
         /// <summary>
         /// Token serialization.
         /// </summary>

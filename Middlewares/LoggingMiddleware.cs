@@ -6,11 +6,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Sample.AspNetCoreWebApi.Middlewares
 {
+    /// <summary>
+    /// Request middleware for logging request duration.
+    /// </summary>
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<LoggingMiddleware> _logger;
 
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="next">Next request delegate.</param>
+        /// <param name="logger">Logger.</param>
         public LoggingMiddleware(
             RequestDelegate next,
             ILogger<LoggingMiddleware> logger)

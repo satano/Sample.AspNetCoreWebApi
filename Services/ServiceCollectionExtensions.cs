@@ -11,6 +11,9 @@ using Sample.AspNetCoreWebApi.Models;
 
 namespace Sample.AspNetCoreWebApi.Services
 {
+    /// <summary>
+    /// Extensions for adding services.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
         private const string ConnectionStringSectionName = "ConnectionString";
@@ -46,6 +49,11 @@ namespace Sample.AspNetCoreWebApi.Services
                 .AddTransient<IUserRepository, UserRepository>();
         }
 
+        /// <summary>
+        /// Register services to IoC container.
+        /// </summary>
+        /// <param name="services">IoC container.</param>
+        /// <returns></returns>
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             Check.NotNull(services, nameof(services));
@@ -54,6 +62,12 @@ namespace Sample.AspNetCoreWebApi.Services
                 .AddTransient<IActiveUser, HttpContextUser>();
         }
 
+        /// <summary>
+        /// Register Jwt authorization to IoC conteiner
+        /// </summary>
+        /// <param name="services">IoC container.</param>
+        /// <param name="configuration">Jwt configuration.</param>
+        /// <returns>IoC container for fluent syntax.</returns>
         public static IServiceCollection AddJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AuthenticationOption>(configuration.GetSection("Authentication"));

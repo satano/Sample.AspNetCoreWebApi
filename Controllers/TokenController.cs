@@ -10,6 +10,9 @@ using Sample.AspNetCoreWebApi.ViewModels;
 
 namespace Sample.AspNetCoreWebApi.Controllers
 {
+    /// <summary>
+    /// Controller for login.
+    /// </summary>
     [Route("token")]
     [AllowAnonymous]
     public class TokenController : ControllerBase
@@ -18,6 +21,11 @@ namespace Sample.AspNetCoreWebApi.Controllers
         private readonly AuthenticationOption _params;
         private readonly IUserRepository _userRepository;
 
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="optionsAccessor">Jwt settings.</param>
+        /// <param name="userRepository">Repository for obtaining users.</param>
         public TokenController(IOptions<AuthenticationOption> optionsAccessor, IUserRepository userRepository)
         {
             _userRepository = Check.NotNull(userRepository, nameof(userRepository));

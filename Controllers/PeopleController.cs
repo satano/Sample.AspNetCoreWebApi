@@ -10,11 +10,19 @@ using Sample.AspNetCoreWebApi.ViewModels;
 
 namespace Sample.AspNetCoreWebApi.Controllers
 {
+    /// <summary>
+    /// Controller for handling people requests.
+    /// </summary>
     public class PeopleController : ControllerBase
     {
         private readonly IPeopleRepository _peopleRepository;
         private readonly IActiveUser _activeUser;
 
+        /// <summary>
+        /// Const.
+        /// </summary>
+        /// <param name="peopleRepository">Repository for obtaining people.</param>
+        /// <param name="activeUser">Servis for obtaining active user.</param>
         public PeopleController(IPeopleRepository peopleRepository, IActiveUser activeUser)
         {
             _peopleRepository = Check.NotNull(peopleRepository, nameof(peopleRepository));
