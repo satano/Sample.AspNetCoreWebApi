@@ -5,6 +5,7 @@ using Kros.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Sample.AspNetCoreWebApi.Authorization;
 using Sample.AspNetCoreWebApi.Models;
@@ -45,8 +46,10 @@ namespace Sample.AspNetCoreWebApi.Services
         {
             Check.NotNull(services, nameof(services));
 
-            return services.AddTransient<IPeopleRepository, PeopleRepository>()
-                .AddTransient<IUserRepository, UserRepository>();
+            services.TryAddTransient<IPeopleRepository, PeopleRepository>();
+            services.TryAddTransient<IUserRepository, UserRepository>();
+
+            return services;
         }
 
         /// <summary>
@@ -58,8 +61,9 @@ namespace Sample.AspNetCoreWebApi.Services
         {
             Check.NotNull(services, nameof(services));
 
-            return services
-                .AddTransient<IActiveUser, HttpContextUser>();
+            services.TryAddTransient<IActiveUser, HttpContextUser>();
+
+            return services;
         }
 
         /// <summary>

@@ -26,10 +26,9 @@ namespace Sample.AspNetCoreWebApi.IntegrationTests
         protected TestFixture(string relativeTargetProjectParentDir)
         {
             var startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
-            var contentRoot = GetProjectPath(relativeTargetProjectParentDir, startupAssembly);
+          //  var contentRoot = GetProjectPath(relativeTargetProjectParentDir, startupAssembly);
 
             var builder = new WebHostBuilder()
-                .UseContentRoot(contentRoot)
                 .ConfigureServices(InitializeServices)
                 .UseEnvironment("Development")
                 .UseStartup(typeof(TStartup));
@@ -44,8 +43,8 @@ namespace Sample.AspNetCoreWebApi.IntegrationTests
 
         public void Dispose()
         {
-            Client.Dispose();
-            _server.Dispose();
+            Client?.Dispose();
+            _server?.Dispose();
         }
 
         protected virtual void InitializeServices(IServiceCollection services)
@@ -60,44 +59,6 @@ namespace Sample.AspNetCoreWebApi.IntegrationTests
             manager.FeatureProviders.Add(new ViewComponentFeatureProvider());
 
             services.AddSingleton(manager);
-        }
-
-        /// <summary>
-        /// Gets the full path to the target project that we wish to test
-        /// </summary>
-        /// <param name="projectRelativePath">
-        /// The parent directory of the target project.
-        /// e.g. src, samples, test, or test/Websites
-        /// </param>
-        /// <param name="startupAssembly">The target project's assembly.</param>
-        /// <returns>The full path to the target project.</returns>
-        private static string GetProjectPath(string projectRelativePath, Assembly startupAssembly)
-        {
-            // Get name of the target project which we want to test
-            var projectName = startupAssembly.GetName().Name;
-
-            // Get currently executing test project path
-            var applicationBasePath = System.AppContext.BaseDirectory;
-
-            // Find the path to the target project
-            var directoryInfo = new DirectoryInfo(applicationBasePath);
-            do
-            {
-                directoryInfo = directoryInfo.Parent;
-
-                var projectDirectoryInfo = new DirectoryInfo(Path.Combine(directoryInfo.FullName, projectRelativePath));
-                if (projectDirectoryInfo.Exists)
-                {
-                    var projectFileInfo = new FileInfo(Path.Combine(projectDirectoryInfo.FullName, projectName, $"{projectName}.csproj"));
-                    if (projectFileInfo.Exists)
-                    {
-                        return Path.Combine(projectDirectoryInfo.FullName, projectName);
-                    }
-                }
-            }
-            while (directoryInfo.Parent != null);
-
-            throw new Exception($"Project root could not be located using the application root {applicationBasePath}.");
         }
     }
 
