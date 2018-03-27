@@ -5,7 +5,7 @@
 ## Prehľad
 Zjednodušený popis api, ktoré obsahuje tento príklad.
 API|Description|Request body|Response body
-|-|-|-|-|
+|---|---|---|---|
 |GET /api/people|Get all people for authorized user.|None|Array of people|
 |GET /api/people{id}|Get person by id|None|Person|
 |POST /api/people|Create new person on server.|New person|New person id|
