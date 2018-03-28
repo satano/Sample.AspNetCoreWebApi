@@ -1,6 +1,6 @@
 # Simple example of .net core web api with KORM
 
->Toto repository obsahuje vzorový príklad web api využitím KORMu.
+>Toto repository obsahuje vzorový príklad web api s využitím KORMu.
 
 ## Prehľad
 Zjednodušený popis api, ktoré obsahuje tento príklad.
