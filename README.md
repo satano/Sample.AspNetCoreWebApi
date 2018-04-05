@@ -28,6 +28,11 @@ Jedná sa len o backend bez klienta. Takže vyskúšať si to môžte napríklad
 
 `PeopleController` vyžaduje autorizáciu. Takže najskôr si musíte vyžiadať autorizačný token cez api `/token`.
 
+>Pre prihlasovanie tam je vytvorených zopár používateľov:
+Napríklad janko.hrasko@example.com s heslom strongPassword. 
+Tento používateľ má už niekoľko kontaktov v databáze vytvorených.
+A Administrátor admin@example.com taktiež s heslom strongPassword
+
 ## Čo si môžete pozrieť
 - Vytvorenie vlastného middleware-u
     - `LoggingMiddleware` obsahuje jednoduchý príklad vlastného middleware-u, ktorý loguje requesty. Jeho registrovanie je podľa konvencie v triede `MiddlewareExtensions`.
