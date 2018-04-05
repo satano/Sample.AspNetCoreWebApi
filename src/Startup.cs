@@ -30,6 +30,13 @@ namespace Sample.AspNetCoreWebApi
         {
             services.AddMvc();
 
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddKorm(Configuration)
                 .AddRepositories()
                 .AddJwtAuthorization(Configuration)
@@ -47,7 +54,8 @@ namespace Sample.AspNetCoreWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseResponseCompression()
+            app.UseCors("MyPolicy")
+                .UseResponseCompression()
                 .UseStaticFiles()
                 .UseFileServer(new FileServerOptions
                 {
