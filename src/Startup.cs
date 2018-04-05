@@ -55,6 +55,7 @@ namespace Sample.AspNetCoreWebApi
             }
 
             app.UseCors("MyPolicy")
+                .Map("/api/test", TestApi)
                 .UseResponseCompression()
                 .UseStaticFiles()
                 .UseFileServer(new FileServerOptions
@@ -69,5 +70,14 @@ namespace Sample.AspNetCoreWebApi
                 .UseLogging()
                 .UseMvc();
         }
+
+        private static void TestApi(IApplicationBuilder app)
+        {
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("true");
+            });
+        }
+
     }
 }
