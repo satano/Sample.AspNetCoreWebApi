@@ -35,7 +35,7 @@ namespace Sample.AspNetCoreWebApi.Middlewares
             var ret = this._next(context);
 
             sw.Stop();
-            _logger.LogInformation("Request durration: {0}ms.", sw.ElapsedMilliseconds);
+            _logger.LogInformation("Request duration: {0}ms.", sw.ElapsedMilliseconds);
 
             return ret;
         }
