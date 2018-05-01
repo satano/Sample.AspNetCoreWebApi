@@ -1,6 +1,6 @@
 # Simple example of .net core web api with KORM
 
->Toto repository obsahuje vzorový príklad web api s využitím KORMu.
+>Toto repository obsahuje vzorový príklad web api s využitím [KORMu](https://www.nuget.org/packages/Kros.KORM/).
 
 ## Prehľad
 Zjednodušený popis api, ktoré obsahuje tento príklad.
@@ -58,4 +58,3 @@ A Administrátor admin@example.com taktiež s heslom strongPassword
 
 Je to len prehľad toho čo tento príklad obsahuje. Teraz sa mi naozaj nechce písať viac. Ak máte záujem o to aby som bližšie popísal (vysvetlil) niektorú z týchto častí, tak mi napíšte. Alebo zaraďte issue.
 
-V budúcnosti chcem spraviť aj vzorového Angular 5 klienta. Ak má niekto záujem mi s tým pomôcť tak píšte.
