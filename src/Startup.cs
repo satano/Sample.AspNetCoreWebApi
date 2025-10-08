@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Kros.KORM.Extensions.Asp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Sample.AspNetCoreWebApi.Middlewares;
@@ -28,7 +30,10 @@ namespace Sample.AspNetCoreWebApi
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+            });
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -37,8 +42,8 @@ namespace Sample.AspNetCoreWebApi
                     .AllowAnyHeader();
             }));
 
-            services.AddKorm(Configuration)
-                .AddRepositories()
+            services.AddKorm(Configuration);
+            services.AddRepositories()
                 .AddJwtAuthorization(Configuration)
                 .AddDirectoryBrowser()
                 .AddResponseCompression()
@@ -47,7 +52,7 @@ namespace Sample.AspNetCoreWebApi
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -62,8 +67,8 @@ namespace Sample.AspNetCoreWebApi
                 {
                     FileProvider = new PhysicalFileProvider(
                             Path.Combine(Directory.GetCurrentDirectory(), "MyStaticFiles")),
-                        RequestPath = "/StaticFiles",
-                        EnableDirectoryBrowsing = true
+                    RequestPath = "/StaticFiles",
+                    EnableDirectoryBrowsing = true
                 })
                 .UseSwaggerDocumentation()
                 .UseAuthentication()
