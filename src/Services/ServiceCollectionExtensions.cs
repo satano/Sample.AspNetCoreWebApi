@@ -1,6 +1,3 @@
-using System.Configuration;
-using System.Security.Claims;
-using Kros.KORM;
 using Kros.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Sample.AspNetCoreWebApi.Authorization;
 using Sample.AspNetCoreWebApi.Models;
+using System.Security.Claims;
 
 namespace Sample.AspNetCoreWebApi.Services
 {
@@ -17,27 +15,6 @@ namespace Sample.AspNetCoreWebApi.Services
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        private const string ConnectionStringSectionName = "ConnectionString";
-        private const string CheckNonActiveSearchesOptionsSectionName = "CheckNonActiveSearchesOptions";
-
-        /// <summary>
-        /// Register KORM to IoC container.
-        /// </summary>
-        /// <param name="services">IoC container.</param>
-        /// <param name="configuration">Configuration.</param>
-        public static IServiceCollection AddKorm(this IServiceCollection services, IConfiguration configuration)
-        {
-            Check.NotNull(services, nameof(services));
-            Check.NotNull(configuration, nameof(configuration));
-
-            var connectionString = configuration.GetSection(ConnectionStringSectionName).Get<ConnectionStringSettings>();
-
-            return services.AddScoped<IDatabase>((serviceProvider) =>
-            {
-                return new Database(connectionString);
-            });
-        }
-
         /// <summary>
         /// Register KORM to IoC container.
         /// </summary>
@@ -81,13 +58,13 @@ namespace Sample.AspNetCoreWebApi.Services
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = false,
-                    ValidIssuer = configuration["Authentication:Issuer"],
-                    ValidAudience = configuration["Authentication:Audience"],
-                    IssuerSigningKey = JwtToken.GetSecret(configuration["Authentication:Key"])
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = false,
+                        ValidIssuer = configuration["Authentication:Issuer"],
+                        ValidAudience = configuration["Authentication:Audience"],
+                        IssuerSigningKey = JwtToken.GetSecret(configuration["Authentication:Key"])
                     };
 
                 });
