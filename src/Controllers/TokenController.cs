@@ -45,14 +45,14 @@ namespace Sample.AspNetCoreWebApi.Controllers
 
             if (model == null)
             {
-                return Unauthorized();
+                return Unauthorized("Invalid user name.");
             }
 
             var password = new PasswordHasher(_params.Salt).EncryptPassword(user.Password);
 
             if (model.PasswordHash != password)
             {
-                return Unauthorized();
+                return Unauthorized("Invalid password.");
             }
 
             JwtTokenBuilder builder = new JwtTokenBuilder()

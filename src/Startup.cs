@@ -42,7 +42,8 @@ namespace Sample.AspNetCoreWebApi
                     .AllowAnyHeader();
             }));
 
-            services.AddKorm(Configuration);
+            services.AddKorm(Configuration)
+                .InitDatabaseForIdGenerators();
             services.AddRepositories()
                 .AddJwtAuthorization(Configuration)
                 .AddDirectoryBrowser()

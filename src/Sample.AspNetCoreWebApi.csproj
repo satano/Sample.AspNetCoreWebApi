@@ -1,12 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<NoWarn>1701;1702;1705;1591</NoWarn>
 		<DocumentationFile>bin\Debug\netcoreapp2.0\Sample.AspNetCoreWebApi.xml</DocumentationFile>
 	</PropertyGroup>
-	<ItemGroup>
-		<Folder Include="wwwroot\" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Kros.KORM" Version="7.3.0" />
 		<PackageReference Include="Kros.KORM.Extensions.Asp" Version="2.0.1" />
